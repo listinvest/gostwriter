@@ -34,7 +34,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	pwm := pca9685.Context{}
+	pwm := pca9685.Context{Debug: true}
 	pwm.PWMServoDriver(1,itwoc)
 	pwm.Begin()
 	pwm.SetOscillatorFrequency(27000000)
