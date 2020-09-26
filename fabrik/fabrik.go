@@ -1,8 +1,8 @@
 package fabrik
 
 import (
-	"github.com/x86ed/gostrider/point"
-	"github.com/x86ed/gostrider/servo"
+	"github.com/x86ed/gostwriter/point"
+	"github.com/x86ed/gostwriter/servo"
 )
 
 // FABRIK control struct

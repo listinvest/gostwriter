@@ -1,6 +1,6 @@
 package servo
 
-import "github.com/x86ed/gostrider/point"
+import "github.com/x86ed/gostwriter/point"
 
 const (
 	// X axis of rotation
@@ -56,6 +56,7 @@ var RAxis = Servo{
 	Address: 12,
 	Name:    "U-4",
 	Offset:  point.Point{X: 0, Y: 105, Z: 0},
+	Next:    &BAxis,
 }
 
 // BAxis wrist pitch servo
@@ -64,6 +65,7 @@ var BAxis = Servo{
 	Address: 11,
 	Name:    "B-5",
 	Offset:  point.Point{X: 0, Y: 22, Z: 0},
+	Next:    &TAxis,
 }
 
 // TAxis wrist rotation servo
