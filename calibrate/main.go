@@ -46,13 +46,13 @@ func main() {
 		for pulselen := ServoMin; pulselen < ServoMax; pulselen++{
 			pwm.SetPWM(servonum, 0, uint16(pulselen))
 		}
-
+		fmt.Println("\n\n\n\n\nP1\n\n\n\n\n")
 		time.Sleep(time.Millisecond * 500)
 
 		for pulselen := ServoMax; pulselen > ServoMin; pulselen--{
 			pwm.SetPWM(servonum, 0, uint16(pulselen))
 		}
-
+		fmt.Println("\n\n\n\n\nP2\n\n\n\n\n")
 		time.Sleep(time.Millisecond * 500)
 
 		// Drive each servo one at a time using writeMicroseconds(), it's not precise due to calculation rounding!
@@ -60,12 +60,12 @@ func main() {
 		for microsec := USMin; microsec < USMax; microsec++ {
 			pwm.WriteMicroseconds(servonum, uint16(microsec));
 		}
-
+		fmt.Println("\n\n\n\n\nP3\n\n\n\n\n")
 		time.Sleep(time.Millisecond * 500)
 		for microsec := USMax; microsec > USMin; microsec-- {
 			pwm.WriteMicroseconds(servonum, uint16(microsec));
 		}
-
+		fmt.Println("\n\n\n\n\nP4\n\n\n\n\n")
 		time.Sleep(time.Millisecond * 500)
 		if (servonum < 10) { 
 			servonum = 10
