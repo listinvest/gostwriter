@@ -49,13 +49,13 @@ func main() {
 		fmt.Println("servo: ",servonum)
 
 		for pulselen := ServoMin; pulselen < ServoMax; pulselen++{
-			pwm.SetPWM(servonum, 0, pulselen)
+			pwm.SetPWM(servonum, 0, uint16(pulselen))
 		}
 
 		time.Sleep(time.Millisecond * 500)
 
 		for pulselen := ServoMax; pulselen > ServoMin; pulselen--{
-			pwm.SetPWM(servonum, 0, pulselen)
+			pwm.SetPWM(servonum, 0, uint16(pulselen))
 		}
 
 		time.Sleep(time.Millisecond * 500)
@@ -63,12 +63,12 @@ func main() {
 		// Drive each servo one at a time using writeMicroseconds(), it's not precise due to calculation rounding!
 		// The writeMicroseconds() function is used to mimic the Arduino Servo library writeMicroseconds() behavior. 
 		for microsec := USMin; microsec < USMax; microsec++ {
-			pwm.WriteMicroseconds(servonum, microsec);
+			pwm.WriteMicroseconds(servonum, uint16(microsec));
 		}
 
 		time.Sleep(time.Millisecond * 500)
 		for microsec := USMax; microsec > USMin; microsec-- {
-			pwm.WriteMicroseconds(servonum, microsec);
+			pwm.WriteMicroseconds(servonum, uint16(microsec));
 		}
 
 		time.Sleep(time.Millisecond * 500)
