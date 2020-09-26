@@ -40,8 +40,7 @@ func main() {
 	pwm.SetOscillatorFrequency(27000000)
 	pwm.SetPWMFrequency(ServoFreq)
 	time.Sleep(time.Millisecond *10)
-	var servonum uint8 = 10
-	for servonum < 16 {
+	for servonum := 10;servonum < 16; servonum++ {
 		fmt.Println("servo: ",servonum)
 
 		for pulselen := ServoMin; pulselen < ServoMax; pulselen++{
@@ -71,7 +70,6 @@ func main() {
 		if (servonum < 10) { 
 			servonum = 10
 		}
-		servonum++
 	}
 	pwm.Bus.Close()
 }
