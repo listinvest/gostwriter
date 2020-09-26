@@ -68,10 +68,10 @@ func main() {
 		}
 
 		time.Sleep(time.Millisecond * 500)
-		servonum++
 		if (servonum < 10) { 
 			servonum = 10
 		}
+		servonum++
 	}
 	pwm.Bus.Close()
 }
