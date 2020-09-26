@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"time"
+	"log"
 
 	"github.com/d2r2/go-i2c"
 	"github.com/x86ed/gostwriter/pca9685"
@@ -12,7 +13,7 @@ const (
 	ServoMin = 150
 	ServoMax = 600
 	USMin = 600
-	USMAX = 2400
+	USMax = 2400
 	ServoFreq = 50
 )
 
@@ -25,7 +26,7 @@ func setServoPulse(n uint8, pulse float64, c pca9685.Context){
 	pulse = pulse * 1000000
 	pulse = pulse/pulselength
 	fmt.Println(pulse)
-	c.SetPWM(n, 0, pulse)
+	c.SetPWM(n, 0, uint16(pulse))
 }
 
 func main() {
@@ -45,15 +46,15 @@ func main() {
 			servonum = 10
 			continue
 		}
-		fmt.Fprintln("servo: ",servonum)
+		fmt.Println("servo: ",servonum)
 
-		for pulselen = ServoMin; pulselen < ServoMax; pulselen++{
+		for pulselen := ServoMin; pulselen < ServoMax; pulselen++{
 			pwm.SetPWM(servonum, 0, pulselen)
 		}
 
 		time.Sleep(time.Millisecond * 500)
 
-		for pulselen = ServoMax; pulselen > ServoMin; pulselen--{
+		for pulselen := ServoMax; pulselen > ServoMin; pulselen--{
 			pwm.SetPWM(servonum, 0, pulselen)
 		}
 
@@ -61,12 +62,12 @@ func main() {
 
 		// Drive each servo one at a time using writeMicroseconds(), it's not precise due to calculation rounding!
 		// The writeMicroseconds() function is used to mimic the Arduino Servo library writeMicroseconds() behavior. 
-		for microsec = USMin; microsec < USMax; microsec++ {
+		for microsec := USMin; microsec < USMax; microsec++ {
 			pwm.WriteMicroseconds(servonum, microsec);
 		}
 
 		time.Sleep(time.Millisecond * 500)
-		for microsec = USMax; microsec > USMin; microsec-- {
+		for microsec := USMax; microsec > USMin; microsec-- {
 			pwm.WriteMicroseconds(servonum, microsec);
 		}
 
