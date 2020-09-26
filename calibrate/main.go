@@ -42,10 +42,6 @@ func main() {
 	time.Sleep(time.Millisecond *10)
 	var servonum uint8 = 10
 	for servonum < 16 {
-		if (servonum < 10) { 
-			servonum = 10
-			continue
-		}
 		fmt.Println("servo: ",servonum)
 
 		for pulselen := ServoMin; pulselen < ServoMax; pulselen++{
@@ -73,6 +69,9 @@ func main() {
 
 		time.Sleep(time.Millisecond * 500)
 		servonum++
+		if (servonum < 10) { 
+			servonum = 10
+		}
 	}
 	pwm.Bus.Close()
 }
