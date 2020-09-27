@@ -170,8 +170,16 @@ func main() {
 					log.Fatalln("Not enough arguments.")
 					return 1
 				}
-				srv :=  uint8(strconv.Atoi(c.Args().Get(0)))
-				val := uint16(strconv.Atoi(c.Args().Get(1)))
+				srv, err :=  uint8(strconv.Atoi(c.Args().Get(0)))
+				if err != nil {
+					log.Fatalln(err)
+					return 1
+				}
+				val, err := uint16(strconv.Atoi(c.Args().Get(1)))
+				if err != nil {
+					log.Fatalln(err)
+					return 1
+				}
 				ServoSet(srv,val)
 			  return nil
 			},
