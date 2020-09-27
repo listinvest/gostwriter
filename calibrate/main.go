@@ -7,13 +7,19 @@ import (
 
 	"github.com/d2r2/go-i2c"
 	"github.com/x86ed/gostwriter/pca9685"
+	"github.com/urfave/cli/v2"
 )
 
 const (
+	// ServoMin minimum servo value
 	ServoMin = 150
+	// ServoMax maximum servo value
 	ServoMax = 600
+	// USMin minimum pulse size
 	USMin = 600
+	// USMax maximum pulse size
 	USMax = 2400
+	// ServoFreq servo operationg frequency
 	ServoFreq = 50
 )
 
@@ -29,7 +35,8 @@ func setServoPulse(n uint8, pulse float64, c pca9685.Context){
 	c.SetPWM(n, 0, uint16(pulse))
 }
 
-func main() {
+// ServoTest routine
+func ServoTest(){
 	itwoc, err := i2c.NewI2C(pca9685.I2CAddress,1)
 	if err != nil {
 		log.Fatal(err)
@@ -40,19 +47,19 @@ func main() {
 	pwm.SetOscillatorFrequency(27000000)
 	pwm.SetPWMFrequency(ServoFreq)
 	time.Sleep(time.Millisecond *10)
-	for servonum := uint8(11);servonum < 16; servonum++ {
+	for servonum := uint8(10);servonum < 16; servonum++ {
 		fmt.Println("servo: ",servonum)
 
 		for pulselen := ServoMin; pulselen < ServoMax; pulselen++{
 			pwm.SetPWM(servonum, 0, uint16(pulselen))
 		}
-		fmt.Println("\n\n\n\n\nP1\n\n\n\n\n")
+
 		time.Sleep(time.Millisecond * 500)
 
 		for pulselen := ServoMax; pulselen > ServoMin; pulselen--{
 			pwm.SetPWM(servonum, 0, uint16(pulselen))
 		}
-		fmt.Println("\n\n\n\n\nP2\n\n\n\n\n")
+
 		time.Sleep(time.Millisecond * 500)
 
 		// Drive each servo one at a time using writeMicroseconds(), it's not precise due to calculation rounding!
@@ -60,16 +67,90 @@ func main() {
 		for microsec := USMin; microsec < USMax; microsec++ {
 			pwm.WriteMicroseconds(servonum, uint16(microsec));
 		}
-		fmt.Println("\n\n\n\n\nP3\n\n\n\n\n")
+
 		time.Sleep(time.Millisecond * 500)
 		for microsec := USMax; microsec > USMin; microsec-- {
 			pwm.WriteMicroseconds(servonum, uint16(microsec));
 		}
-		fmt.Println("\n\n\n\n\nP4\n\n\n\n\n")
+
 		time.Sleep(time.Millisecond * 500)
 		if (servonum < 10) { 
 			servonum = 10
 		}
 	}
 	pwm.Bus.Close()
+}
+
+// ServoSet set an individual servo's value
+func ServoSet(servo uint8, val uint16){
+	itwoc, err := i2c.NewI2C(pca9685.I2CAddress,1)
+	if err != nil {
+		log.Fatal(err)
+	}
+	pwm := pca9685.Context{Debug: true}
+	pwm.PWMServoDriver(1,itwoc)
+	pwm.Begin()
+	pwm.SetOscillatorFrequency(27000000)
+	pwm.SetPWMFrequency(ServoFreq)
+	time.Sleep(time.Millisecond *10)
+	pwm.SetPWM(servo, 0, val)
+	pwm.Bus.Close()
+}
+
+// Reset the I2C chip
+func Reset(){
+	itwoc, err := i2c.NewI2C(pca9685.I2CAddress,1)
+	if err != nil {
+		log.Fatal(err)
+	}
+	pwm := pca9685.Context{Debug: true}
+	pwm.PWMServoDriver(1,itwoc)
+	pwm.Begin()
+	pwm.SetOscillatorFrequency(27000000)
+	pwm.SetPWMFrequency(ServoFreq)
+	time.Sleep(time.Millisecond *10)
+	pwm.Reset()
+	pwm.Bus.Close()
+}
+
+func main() {
+	app := &cli.App{
+		Commands: []*cli.Command{
+		  {
+			Name:    "ServoTest",
+			Aliases: []string{"st"},
+			Usage:   "Run the servo test program",
+			Action:  func(c *cli.Context) error {
+				fmt.Println(c.Args)
+				//ServoTest()
+			  return nil
+			},
+		  },
+		  {
+			Name:    "ServoSet",
+			Aliases: []string{"ss"},
+			Usage:   "set a servo to a set value",
+			Action:  func(c *cli.Context) error {
+				ServoSet()
+			  return nil
+			},
+		  },
+		  {
+			Name:    "Reset",
+			Aliases: []string{"r"},
+			Usage:   "reset the device",
+			Action:  func(c *cli.Context) error {
+				Reset()
+			  return nil
+			},
+		  },
+		},
+	  }
+	
+	  sort.Sort(cli.CommandsByName(app.Commands))
+	
+	  err := app.Run(os.Args)
+	  if err != nil {
+		log.Fatal(err)
+	  }
 }
