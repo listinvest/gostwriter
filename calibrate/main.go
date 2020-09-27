@@ -1,16 +1,18 @@
 package main
 
 import (
+	"errors"
 	"fmt"
-	"time"
 	"log"
 	"os"
 	"sort"
 	"strconv"
+	"time"
+	"errors"
 
 	"github.com/d2r2/go-i2c"
-	"github.com/x86ed/gostwriter/pca9685"
 	"github.com/urfave/cli/v2"
+	"github.com/x86ed/gostwriter/pca9685"
 )
 
 const (
@@ -165,20 +167,19 @@ func main() {
 			Aliases: []string{"ss"},
 			Usage:   "set a servo to a set value",
 			Action:  func(c *cli.Context) error {
-				arg = c.Args()
 				if c.Args().Len() < 2 {
 					log.Fatalln("Not enough arguments.")
-					return 1
+					return errors.New("Not enough arguments")
 				}
 				srv, err :=  uint8(strconv.Atoi(c.Args().Get(0)))
 				if err != nil {
 					log.Fatalln(err)
-					return 1
+					return err
 				}
 				val, err := uint16(strconv.Atoi(c.Args().Get(1)))
 				if err != nil {
 					log.Fatalln(err)
-					return 1
+					return err
 				}
 				ServoSet(srv,val)
 			  return nil
