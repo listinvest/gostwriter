@@ -48,7 +48,7 @@ func ServoTest(){
 	pwm := pca9685.Context{Debug: true}
 	pwm.PWMServoDriver(1,itwoc)
 	pwm.Begin()
-	pwm.SetOscillatorFrequency(27000000)
+	pwm.SetOscillatorFrequency(25000000)
 	pwm.SetPWMFrequency(ServoFreq)
 	time.Sleep(time.Millisecond *10)
 	for servonum := uint8(10);servonum < 16; servonum++ {
