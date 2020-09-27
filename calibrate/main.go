@@ -132,7 +132,7 @@ func main() {
 			Aliases: []string{"ss"},
 			Usage:   "set a servo to a set value",
 			Action:  func(c *cli.Context) error {
-				fmt.Println(c.Args)
+				fmt.Println(c.Args())
 				//ServoSet()
 			  return nil
 			},
