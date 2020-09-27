@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"sort"
+	"strconv"
 
 	"github.com/d2r2/go-i2c"
 	"github.com/x86ed/gostwriter/pca9685"
@@ -132,8 +133,14 @@ func main() {
 			Aliases: []string{"ss"},
 			Usage:   "set a servo to a set value",
 			Action:  func(c *cli.Context) error {
-				fmt.Println(c.Args())
-				//ServoSet()
+				arg = c.Args()
+				if c.Args().Len() < 2 {
+					log.Fatalln("Not enough arguments.")
+					return 1
+				}
+				srv :=  uint8(strconv.Atoi(c.Args().Get(0)))
+				val := uint16(strconv.Atoi(c.Args().Get(1)))
+				ServoSet(srv,val)
 			  return nil
 			},
 		  },
