@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"time"
 	"log"
+	"os"
+	"sort"
 
 	"github.com/d2r2/go-i2c"
 	"github.com/x86ed/gostwriter/pca9685"
@@ -121,8 +123,7 @@ func main() {
 			Aliases: []string{"st"},
 			Usage:   "Run the servo test program",
 			Action:  func(c *cli.Context) error {
-				fmt.Println(c.Args)
-				//ServoTest()
+				ServoTest()
 			  return nil
 			},
 		  },
@@ -131,7 +132,8 @@ func main() {
 			Aliases: []string{"ss"},
 			Usage:   "set a servo to a set value",
 			Action:  func(c *cli.Context) error {
-				ServoSet()
+				fmt.Println(c.Args)
+				//ServoSet()
 			  return nil
 			},
 		  },
