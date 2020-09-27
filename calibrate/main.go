@@ -8,7 +8,6 @@ import (
 	"sort"
 	"strconv"
 	"time"
-	"errors"
 
 	"github.com/d2r2/go-i2c"
 	"github.com/urfave/cli/v2"
@@ -171,17 +170,19 @@ func main() {
 					log.Fatalln("Not enough arguments.")
 					return errors.New("Not enough arguments")
 				}
-				srv, err :=  uint8(strconv.Atoi(c.Args().Get(0)))
+				srv, err := strconv.Atoi(c.Args().Get(0))
 				if err != nil {
 					log.Fatalln(err)
 					return err
 				}
-				val, err := uint16(strconv.Atoi(c.Args().Get(1)))
+				srv8 := uint8(srv)
+				val, err := strconv.Atoi(c.Args().Get(1))
 				if err != nil {
 					log.Fatalln(err)
 					return err
 				}
-				ServoSet(srv,val)
+				val16 := uint16(val)
+				ServoSet(srv8,val16)
 			  return nil
 			},
 		  },
