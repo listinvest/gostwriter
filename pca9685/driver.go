@@ -162,10 +162,10 @@ func (c *Context) SetPWM(num uint8, on uint16, off uint16) {
 	c.Bus = twoc
 	a, err := c.Bus.WriteBytes([]byte{
 		LED0OnLow + (4 * num),
-		byte(on >> 8),
 		byte(on & 0x00ff),
-		byte(off >> 8),
+		byte(on >> 8),
 		byte(off & 0x00ff),
+		byte(off >> 8),
 	})
 	if err != nil || a != 5 {
 		log.Fatal(err)
