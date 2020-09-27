@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/d2r2/go-i2c"
+	"github.com/x86ed/go-i2c"
 	"github.com/urfave/cli/v2"
 	"github.com/x86ed/gostwriter/pca9685"
 )

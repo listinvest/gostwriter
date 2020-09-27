@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/d2r2/go-i2c"
+	"github.com/x86ed/go-i2c"
 )
 
 // Context of a i2c connection
