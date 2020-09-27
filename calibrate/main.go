@@ -116,6 +116,38 @@ func Reset(){
 	pwm.Bus.Close()
 }
 
+// Sleep the I2C chip
+func Sleep(){
+	itwoc, err := i2c.NewI2C(pca9685.I2CAddress,1)
+	if err != nil {
+		log.Fatal(err)
+	}
+	pwm := pca9685.Context{Debug: true}
+	pwm.PWMServoDriver(1,itwoc)
+	pwm.Begin()
+	pwm.SetOscillatorFrequency(27000000)
+	pwm.SetPWMFrequency(ServoFreq)
+	time.Sleep(time.Millisecond *10)
+	pwm.Sleep()
+	pwm.Bus.Close()
+}
+
+// WakeUp the I2C chip
+func WakeUp(){
+	itwoc, err := i2c.NewI2C(pca9685.I2CAddress,1)
+	if err != nil {
+		log.Fatal(err)
+	}
+	pwm := pca9685.Context{Debug: true}
+	pwm.PWMServoDriver(1,itwoc)
+	pwm.Begin()
+	pwm.SetOscillatorFrequency(27000000)
+	pwm.SetPWMFrequency(ServoFreq)
+	time.Sleep(time.Millisecond *10)
+	pwm.WakeUp()
+	pwm.Bus.Close()
+}
+
 func main() {
 	app := &cli.App{
 		Commands: []*cli.Command{
@@ -150,6 +182,24 @@ func main() {
 			Usage:   "reset the device",
 			Action:  func(c *cli.Context) error {
 				Reset()
+			  return nil
+			},
+		  },
+		  {
+			Name:    "Sleep",
+			Aliases: []string{"s"},
+			Usage:   "sleep the device",
+			Action:  func(c *cli.Context) error {
+				Sleep()
+			  return nil
+			},
+		  },
+		  {
+			Name:    "Wake",
+			Aliases: []string{"w"},
+			Usage:   "wake the device",
+			Action:  func(c *cli.Context) error {
+				WakeUp()
 			  return nil
 			},
 		  },
