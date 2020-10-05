@@ -8,4 +8,5 @@ require (
 	github.com/urfave/cli/v2 v2.2.0
 	github.com/x86ed/go-i2c v0.2.1
 	github.com/x86ed/gostrider v0.0.0-20200926024652-27e24d15f955
+	golang.org/x/tools v0.0.0-20200929223013-bf155c11ec6f // indirect
 )

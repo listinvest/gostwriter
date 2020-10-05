@@ -3,8 +3,10 @@ package servo
 import "github.com/x86ed/gostwriter/point"
 
 const (
+	// N null doesn't rotate
+	N = iota
 	// X axis of rotation
-	X = iota
+	X
 	// Y axis of rotation
 	Y
 	// Z axis of rotation
@@ -13,14 +15,16 @@ const (
 
 // Servo representation of servo joint
 type Servo struct {
-	Axis    int
-	Address uint8
-	Angle   float64
-	Upper   float64
-	Lower   float64
-	Name    string
-	Offset  point.Point
-	Next    *Servo
+	Axis     int
+	Address  uint8
+	Angle    float64
+	UpperPWM int
+	LowerPWM int
+	Upper    float64
+	Lower    float64
+	Name     string
+	Offset   point.Point // end of joint
+	Next     *Servo
 }
 
 // SAxis base servo of arm
@@ -54,7 +58,7 @@ var UAxis = Servo{
 var RAxis = Servo{
 	Axis:    X,
 	Address: 12,
-	Name:    "U-4",
+	Name:    "R-4",
 	Offset:  point.Point{X: 0, Y: 105, Z: 0},
 	Next:    &BAxis,
 }
@@ -73,5 +77,5 @@ var TAxis = Servo{
 	Axis:    X,
 	Address: 10,
 	Name:    "T-6",
-	Offset:  point.Point{X: 0, Y: 15.1, Z: 36.5},
+	Offset:  point.Point{X: 0, Y: 15.1, Z: -36.5},
 }

@@ -1,7 +1,6 @@
 package pca9685
 
 import (
-	"fmt"
 	"log"
 	"time"
 
@@ -145,7 +144,9 @@ func (c *Context) GetPWM(num uint8) uint8 {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("%v\n", bb)
+	if c.Debug {
+		log.Printf("get PWM %v\n", bb)
+	}
 	return bb[0]
 }
 
@@ -254,8 +255,9 @@ func (c *Context) read8(addr uint8) uint8 {
 	if err != nil || i != 1 {
 		log.Fatal(err)
 	}
-
-	fmt.Printf("%v\n", bb)
+	if c.Debug {
+		log.Printf("read %v\n", bb)
+	}
 	return bb[0]
 }
 
